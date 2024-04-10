@@ -1,0 +1,29 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class GetUsername : MonoBehaviour
+{
+    public string username;
+    // Start is called before the first frame update
+
+    public void Start()
+    {
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
+    public void Username(string input)
+    {
+        if (input.Length > 0)
+        {
+            username = input;
+            GameManager.Instance.username = username;
+        }
+    }
+}

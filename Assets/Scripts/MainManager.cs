@@ -11,10 +11,13 @@ public class MainManager : MonoBehaviour
     public Rigidbody Ball;
 
     public Text ScoreText;
+    public Text RecordText;
     public GameObject GameOverText;
     
     private bool m_Started = false;
-    private int m_Points;
+    public int m_Points;
+    public int record;
+    public string recordHolder;
     
     private bool m_GameOver = false;
 
@@ -36,6 +39,16 @@ public class MainManager : MonoBehaviour
                 brick.onDestroyed.AddListener(AddPoint);
             }
         }
+        if (GameManager.Instance.record == 0)
+        {
+            record = 0;
+        }
+        else
+        {
+            record = GameManager.Instance.record;
+            ReloadRecord();
+        }
+ 
     }
 
     private void Update()
@@ -57,7 +70,8 @@ public class MainManager : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+                // Load menu screen instead of reloading active scene
+                SceneManager.LoadScene(0);
             }
         }
     }
@@ -66,11 +80,35 @@ public class MainManager : MonoBehaviour
     {
         m_Points += point;
         ScoreText.text = $"Score : {m_Points}";
+
     }
 
     public void GameOver()
     {
         m_GameOver = true;
         GameOverText.SetActive(true);
+        SetRecord();
+    }
+
+    public void SetRecord()
+    {
+        if (m_Points > record)
+        {
+            record = m_Points;
+
+            recordHolder = GameManager.Instance.username;
+            GameManager.Instance.recordHolder = recordHolder;
+            GameManager.Instance.record = record;
+
+            RecordText.text = $"Best Score : {recordHolder} : {record}";
+        }
+    }
+    
+    public void ReloadRecord()
+    {
+        recordHolder = GameManager.Instance.recordHolder;
+        record = GameManager.Instance.record;
+
+        RecordText.text = $"Best Score : {recordHolder} : {record}";
     }
 }
